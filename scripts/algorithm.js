@@ -30,6 +30,11 @@ function ACO(data){
 	var kelilingKota = urutanKota(Thao, alpha, betha,penyebut, data,urutandummy)
 	console.log(kelilingKota)
 
+	var panjang = panjangPerjalanan(kelilingKota, data);
+	console.log(panjang);
+
+	var ThaoBaru = newThao(Rho, Thao);
+	console.log(ThaoBaru);
 	// var Random = 
 	// var fitness = hitungFitnessPopulasi(data,randomSemut);						//Fitness
 	// console.log(fitness);
@@ -428,7 +433,7 @@ function MPSO(data,partikel,maxIter){
 			
 			for (var i = 0; i < data.length; i++) {
 				jalurKota[i]=[];
-
+				jalurKota[data.length]=[];
 				jalurKota[0][i]=randurt[0][i];
 			
 								
@@ -526,8 +531,37 @@ function MPSO(data,partikel,maxIter){
 			
 			
 		console.log(jalur);
-			return jalur;
+		for (var i = 0; i < data.length; i++) {
+
+			jalurKota[data.length][i] = jalurKota[0][i];
 		}
+			return jalurKota;
+		}
+
+		function panjangPerjalanan(jalurkota, data){
+			var total = new Array();
+			var sum = 0;
+			console.log(jalurkota);
+			for (var j = 0; j< data.length; j++) {
+				total[j] = [];
+				for (var k = 0; k < data.length; k++) {
+					console.log(data[jalurkota[k][j]])
+					console.log(jalurkota[k+1][j])
+					sum += data[jalurkota[k][j]][jalurkota[k+1][j]]
+					total [j] = sum
+				} 
+			}
+			return total
+
+		}
+
+		function newThao(rho,thao){
+		var NT = 0;
+		NT = (1-rho)*thao;
+
+		return NT;		
+		}
+
 
 	
 
