@@ -35,6 +35,12 @@ function ACO(data){
 
 	var ThaoBaru = newThao(Rho, Thao);
 	console.log(ThaoBaru);
+
+	var matrixThao = matrixNewT(kelilingKota, panjang, ThaoBaru);
+	console.log(matrixThao);
+
+	var matrixThaoSim = matrixTSim(matrixThao)
+	console.log(matrixThaoSim);
 	// var Random = 
 	// var fitness = hitungFitnessPopulasi(data,randomSemut);						//Fitness
 	// console.log(fitness);
@@ -549,7 +555,8 @@ function MPSO(data,partikel,maxIter){
 					console.log(jalurkota[k+1][j])
 					sum += data[jalurkota[k][j]][jalurkota[k+1][j]]
 					total [j] = sum
-				} 
+				}
+				sum = 0; 
 			}
 			return total
 
@@ -560,6 +567,64 @@ function MPSO(data,partikel,maxIter){
 		NT = (1-rho)*thao;
 
 		return NT;		
+		}
+
+		function matrixNewT(jalurkota, panjang,NT){
+			var newThao = new Array(jalurkota.length-1);
+			var sum = 0;
+			for (var i = 0; i < jalurkota.length-1; i++) {
+				newThao[i] = [];
+				for (var j = 0; j < jalurkota.length-1; j++) {
+					newThao[i][j] = 0
+				}
+			}
+			for (var i = 0; i < jalurkota.length-1; i++) {
+				for (var j = 0; j< jalurkota.length-1; j++) {
+					for (var l = 0; l < jalurkota.length-1; l++) {
+				
+					for (var k = 0; k < jalurkota.length-1; k++) {
+
+						if (i!=j && jalurkota[k][l] == i && jalurkota[k+1][l] == j) {
+							console.log(jalurkota[k][l]+" & "+jalurkota[k+1][l]+" & "+i+j)
+							sum += 1/panjang[l];
+							console.log(sum);
+							newThao[i][j] = sum
+						}
+						
+					}
+					
+				}
+				sum = 0;
+				}
+			}
+			for (var i = 0; i < jalurkota.length-1; i++) {
+				
+				for (var j = 0; j < jalurkota.length-1; j++) {
+					if(i!=j){
+						newThao[i][j] += NT;
+					}
+				}
+			}
+			return newThao;
+		}
+
+		function matrixTSim(NT){
+			var simThao = new Array();
+			for (var i = 0; i < NT.length; i++) {
+				simThao[i] = [];
+				for (var j = 0; j < NT.length; j++) {
+					simThao[i][j] = 0
+				}
+			}
+			for (var i = 0; i < NT.length; i++) {
+				for (var j = 0; j < NT.length; j++) {
+					if(i<j){
+						simThao[i][j] = NT [i][j]+ NT [j][i];
+						simThao[j][i] = simThao [i][j];
+					}
+				}
+			}
+			return simThao;
 		}
 
 
