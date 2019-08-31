@@ -15,22 +15,22 @@ function ACO(data) {
   var lenD = data.length;
   var Iter = 0;
 
-  var maxIter = 10;
+  var maxIter = 100;
 
   var temp = new Array(data.length + 1);
   var posisi = randPosisi(data, 1);
 
-  console.log(data);
+  // console.log(data);
 
   var randomSemut = pengkodeanPopulasi(posisi);
-  console.log(randomSemut);
+  // console.log(randomSemut);
   var urutandummy = [[1, 0, 3, 4, 2]];
-  console.log(urutandummy);
+  // console.log(urutandummy);
 
   var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
-  console.log(penyebut);
-  var sortRS = sortPenyebut(urutandummy, penyebut);
-  console.log(sortRS);
+  // console.log(penyebut);
+  var sortRS = sortPenyebut(randomSemut, penyebut);
+  // console.log(sortRS);
 
   var kelilingKota = urutanKota(
     Thao,
@@ -38,36 +38,31 @@ function ACO(data) {
     betha,
     penyebut,
     data,
-    urutandummy
+    randomSemut
   );
-  console.log(kelilingKota);
+  // console.log(kelilingKota);
 
   var panjang = panjangPerjalanan(kelilingKota, data);
-  console.log(panjang);
+  // console.log(panjang);
 
   var ThaoBaru = newThao(Rho, Thao);
-  console.log(ThaoBaru);
+  // console.log(ThaoBaru);
 
   var matrixThao = matrixNewT(kelilingKota, panjang, ThaoBaru);
-  console.log(matrixThao);
+  // console.log(matrixThao);
 
   var matrixThaoSim = matrixTSim(matrixThao);
-  console.log(matrixThaoSim);
-  console.log(kelilingKota);
+  // console.log(matrixThaoSim);
+  // console.log(kelilingKota);
   var savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
-  console.log(savePanjang);
+  // console.log(savePanjang);
   Iter = 1;
-  var posisi2 = randPosisi(data, 1);
-
-  console.log(data);
-
-  var randomSemut = pengkodeanPopulasi(posisi);
-  console.log(randomSemut);
+  
 
   var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
-  console.log(penyebut);
-  var sortRS = sortPenyebut(urutandummy, penyebut);
-  console.log(sortRS);
+  // console.log(penyebut);
+  var sortRS = sortPenyebut(randomSemut, penyebut);
+  // console.log(sortRS);
 
   var kelilingKota = urutanKota(
     Thao,
@@ -75,27 +70,74 @@ function ACO(data) {
     betha,
     penyebut,
     data,
-    urutandummy
+    randomSemut
   );
-  console.log(kelilingKota);
+  // console.log(kelilingKota);
 
   var panjang = panjangPerjalanan(kelilingKota, data);
-  console.log(panjang);
+  // console.log(panjang);
 
   var ThaoBaru = newThao(Rho, Thao);
-  console.log(ThaoBaru);
+  // console.log(ThaoBaru);
 
   var matrixThao = matrixNewT(kelilingKota, panjang, ThaoBaru);
-  console.log(matrixThao);
+  // console.log(matrixThao);
 
   var matrixThaoSim = matrixTSim(matrixThao);
-  console.log(matrixThaoSim);
+  // console.log(matrixThaoSim);
 
   var newIterThao = newThao2(matrixThaoSim, Rho);
-  console.log(newIterThao);
+  // console.log(newIterThao);
 
   savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
-  console.log(savePanjang);
+  // console.log(savePanjang);
+
+  for (var i = 2; i < maxIter; i++) {
+  	Iter = i;
+  var posisi = randPosisi(data, 1);
+
+  // console.log(data);
+
+  var randomSemut = pengkodeanPopulasi(posisi);
+  // console.log(randomSemut);
+
+  var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
+  // console.log(penyebut);
+  var sortRS = sortPenyebut(randomSemut, penyebut);
+  // console.log(sortRS);
+
+  var kelilingKota = urutanKota(
+    Thao,
+    alpha,
+    betha,
+    penyebut,
+    data,
+    randomSemut
+  );
+  // console.log(kelilingKota);
+
+  var panjang = panjangPerjalanan(kelilingKota, data);
+  // console.log(panjang);
+
+  // var ThaoBaru = newThao(Rho, Thao);
+  // console.log(ThaoBaru);
+
+  var matrixThao = matrixNewT2(kelilingKota, panjang, newIterThao);
+  // console.log(matrixThao);
+
+  var matrixThaoSim = matrixTSim(matrixThao);
+  // console.log(matrixThaoSim);
+
+  var newIterThao = newThao2(matrixThaoSim, Rho);
+  // console.log(newIterThao);
+
+  savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
+    // console.log(savePanjang);
+  }
+
+  var hasil = hasilTSP(data, maxIter,savePanjang);
+  console.log(Iter)
+  console.log(hasil);
   // var Random =
   // var fitness = hitungFitnessPopulasi(data,randomSemut);						//Fitness
   // console.log(fitness);
@@ -464,7 +506,7 @@ function sortPenyebut(rs, np) {
 }
 
 function urutanKota(th, a, b, copyRS, data, randurt) {
-  console.log(copyRS);
+  // console.log(copyRS);
   var jalur = [];
   var jalurKota = [];
   var bilrandom = [];
@@ -499,28 +541,28 @@ function urutanKota(th, a, b, copyRS, data, randurt) {
   }
 
   for (var h = 1; h < data.length; h++) {
-    console.log(jalurKota);
+    // console.log(jalurKota);
 
     for (var i = 0; i < data.length; i++) {
       for (var m = 0; m < data.length; m++) {
         if (jalur[i][m] != 0) {
           var tmprandom = Math.random();
           bilrandom[i] = tmprandom;
-          console.log(jalur[i][m]);
-          console.log(bilrandom[i]);
+          // console.log(jalur[i][m]);
+          // console.log(bilrandom[i]);
 
           if (jalur[i][m] > bilrandom[i]) {
             bilrandom[i] = bilrandom[i] + jalur[i][m];
-            console.log(bilrandom[i]);
+            // console.log(bilrandom[i]);
             m = m + data.length;
           }
           m = m + data.length;
         }
       }
-      console.log(bilrandom);
+      // console.log(bilrandom);
 
       for (var j = 0; j < data.length; j++) {
-        console.log("AA" + i + "dan" + j);
+        // console.log("AA" + i + "dan" + j);
         if (
           jalur[i][j] != 0 &&
           sum2 + jalur[i][j] < bilrandom[i] &&
@@ -528,54 +570,57 @@ function urutanKota(th, a, b, copyRS, data, randurt) {
         ) {
           cek = j;
           sum2 = sum2 + jalur[i][j];
-          console.log("SATU");
-          console.log(jalur[i][j]);
+          // console.log("SATU");
+          // console.log(jalur[i][j]);
         } else if (sum2 + jalur[i][j] > bilrandom[i] && j != data.length - 1) {
-          console.log(jalur[i][cek]);
-          console.log(cek);
+          // console.log(jalur[i][cek]);
+          // console.log(cek);
           jalurKota[h][i] = cek;
           sum2 = 0;
           jalur[i][cek] = sum2;
-          console.log(jalur[i][cek]);
+          // console.log(jalur[i][cek]);
           j = j + data.length;
-          console.log("DUA");
-          console.log(jalur);
+          // console.log("DUA");
+          // console.log(jalur);
         } else if (j == data.length - 1 && jalur[i][j] != 0) {
           cek = j;
           jalur[i][j] = 0;
           jalurKota[h][i] = cek;
           sum2 = 0;
-          console.log("TIGA");
-          console.log(jalur[i][j]);
+          // console.log("TIGA");
+          // console.log(jalur[i][j]);
         } else if (j == data.length - 1 && jalur[i][j] == 0) {
           jalur[i][cek] = 0;
           jalurKota[h][i] = cek;
           sum2 = 0;
-          console.log("EMPAT");
-          console.log(jalur[i][cek]);
-        } else console.log("LIMA");
+          // console.log("EMPAT");
+          // console.log(jalur[i][cek]);
+        } else {
+
+        }
+        // console.log("LIMA");
       }
 
       for (var k = 0; k < data.length; k++) {
         if (jalur[i][k] != 0) {
-          console.log(jalur[i][k] + "HH" + k);
-          console.log(copyRS[jalurKota[h][i]][1]);
-          console.log([jalurKota[h][i]] + "dan" + k + "dan" + h);
-          console.log(data[jalurKota[h][i]][k]);
+          // console.log(jalur[i][k] + "HH" + k);
+          // console.log(copyRS[jalurKota[h][i]][1]);
+          // console.log([jalurKota[h][i]] + "dan" + k + "dan" + h);
+          // console.log(data[jalurKota[h][i]][k]);
           sum3 =
             (Math.pow(th, a) * Math.pow(1 / data[jalurKota[h][i]][k], b)) /
             copyRS[jalurKota[h][i]][1];
           jalur[i][k] = sum3;
-          console.log(jalur[i][k] + "JJ" + k);
+          // console.log(jalur[i][k] + "JJ" + k);
         }
       }
     }
   }
 
-  console.log(bilrandom);
-  console.log(jalurKota);
+  // console.log(bilrandom);
+  // console.log(jalurKota);
 
-  console.log(jalur);
+  // console.log(jalur);
   for (var i = 0; i < data.length; i++) {
     jalurKota[data.length][i] = jalurKota[0][i];
   }
@@ -585,12 +630,12 @@ function urutanKota(th, a, b, copyRS, data, randurt) {
 function panjangPerjalanan(jalurkota, data) {
   var total = new Array();
   var sum = 0;
-  console.log(jalurkota);
+  // console.log(jalurkota);
   for (var j = 0; j < data.length; j++) {
     total[j] = [];
     for (var k = 0; k < data.length; k++) {
-      console.log(data[jalurkota[k][j]]);
-      console.log(jalurkota[k + 1][j]);
+      // console.log(data[jalurkota[k][j]]);
+      // console.log(jalurkota[k + 1][j]);
       sum += data[jalurkota[k][j]][jalurkota[k + 1][j]];
       total[j] = sum;
     }
@@ -620,11 +665,11 @@ function matrixNewT(jalurkota, panjang, NT) {
       for (var l = 0; l < jalurkota.length - 1; l++) {
         for (var k = 0; k < jalurkota.length - 1; k++) {
           if (i != j && jalurkota[k][l] == i && jalurkota[k + 1][l] == j) {
-            console.log(
-              jalurkota[k][l] + " & " + jalurkota[k + 1][l] + " & " + i + j
-            );
+            // console.log(
+            //   jalurkota[k][l] + " & " + jalurkota[k + 1][l] + " & " + i + j
+            // );
             sum += 1 / panjang[l];
-            console.log(sum);
+            // console.log(sum);
             newThao[i][j] = sum;
           }
         }
@@ -691,11 +736,11 @@ function matrixNewT2(jalurkota, panjang, NT) {
       for (var l = 0; l < jalurkota.length - 1; l++) {
         for (var k = 0; k < jalurkota.length - 1; k++) {
           if (i != j && jalurkota[k][l] == i && jalurkota[k + 1][l] == j) {
-            console.log(
-              jalurkota[k][l] + " & " + jalurkota[k + 1][l] + " & " + i + j
-            );
+            // console.log(
+            //   jalurkota[k][l] + " & " + jalurkota[k + 1][l] + " & " + i + j
+            // );
             sum += 1 / panjang[l];
-            console.log(sum);
+            // console.log(sum);
             newThao[i][j] = sum;
           }
         }
@@ -727,6 +772,38 @@ function saveArray(d, Iter, temp, panjang) {
     temp[Iter][d.length - 1][i] = panjang[i];
   }
   return temp;
+}
+
+function hasilTSP(data, maxIter, savePanjang){
+	var hasil = new Array(data.length+2);
+	for (var i = 0; i < data.length+2; i++) {
+		hasil[i]=[];
+	}
+	for (var i = 0; i < maxIter; i++) {
+		// savePanjang[i]
+		// hasil[i]  = [];
+		for (var j = 0; j < data.length; j++) {
+			// savePanjang[i]
+			if (i==0 && j==0) {
+				hasil[data.length]=savePanjang[0][data.length][0]
+				hasil[data.length+1]=i
+				for (var k = 0; k < data.length; k++) {
+					hasil[k]=savePanjang[i][k][j];
+					// console.log(hasil)
+
+				}
+			} 
+			else if (savePanjang[i][data.length][j]<hasil[data.length]) {
+				hasil [data.length] = savePanjang[i][data.length][j];
+				hasil[data.length+1]=i;
+				for (var k = 0; k < data.length; k++) {
+					hasil[k]=savePanjang[i][k][j];
+				}
+			}
+			// hasil[i][j] 
+		}
+	}
+	return hasil;
 }
 
 // function acakSemut()
