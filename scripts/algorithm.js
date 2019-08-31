@@ -15,7 +15,7 @@ function ACO(data) {
   var lenD = data.length;
   var Iter = 0;
 
-  var maxIter = 100;
+  var maxIter = 1000;
 
   var temp = new Array(data.length + 1);
   var posisi = randPosisi(data, 1);
@@ -133,10 +133,11 @@ function ACO(data) {
 
   savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
     // console.log(savePanjang);
+      console.log(Iter)
+
   }
 
   var hasil = hasilTSP(data, maxIter,savePanjang);
-  console.log(Iter)
   console.log(hasil);
   // var Random =
   // var fitness = hitungFitnessPopulasi(data,randomSemut);						//Fitness
