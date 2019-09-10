@@ -1,10 +1,3 @@
-// var wMax=0.9;
-// var wMin=0.05;
-// var c1=2;
-// var c2=2;
-// var r1;
-// var r2;
-
 function ACO(data) {
   var Rho = 0.5;
   var Thao = 0.2;
@@ -367,6 +360,22 @@ function pengkodeanPopulasi(pos) {
   //Pencocokan Posisi
   for (var i = 0; i < pos.length; i++) {
     urutan[i] = pengkodean1Partikel(pos[i]);
+  }
+  return urutan;
+}
+
+function pengkodean1Partikel(par) {
+  var dummy = copyV(par);
+  var urutan = new Array();
+  //Sorting
+  dummy.sort();
+  //Pencocokan Posisi
+  for (var i = 0; i < par.length; i++) {
+    for (var j = 0; j < par.length; j++) {
+      if (par[i] == dummy[j]) {
+        urutan[i] = j;
+      }
+    }
   }
   return urutan;
 }
