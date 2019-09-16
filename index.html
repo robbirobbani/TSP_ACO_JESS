@@ -8,8 +8,11 @@
   <script src="scripts/algorithm.js"></script>
 </head>
 <body>
+  <h1 align="center">P E R H I T U N G A N &nbsp;&nbsp; A C O</h1>
+  <h1 align="center">D A N &nbsp;&nbsp; M A C O</h1> 
+  <h3 align="center"> &nbsp;&nbsp; </h3>   
 <input type="file" id="myFile">
-Partikel : <input type="number" id="n1">
+
 MaxIter : <input type="number" id="n2">
 <button onclick="run()">Run</button>
 <script>
@@ -44,13 +47,14 @@ myFile.addEventListener('change', handleFile, false);
 
 function run(){
   var t0 = performance.now();
+  var t1 = performance.now();
   //1 kali Perhitungan
   // var partikel = document.getElementById("n1").value;
   // var maxIter = document.getElementById("n2").value;
   if(dataA!=null){
     // PSO(dataA,partikel,maxIter);
     // MPSO(dataA,partikel,maxIter);
-    MACO(dataA);
+    MACO(dataA,t0);
   }
 
   //Pengulangan perhitungan
@@ -76,13 +80,13 @@ function run(){
   // console.log(t1-t0);
 
 </script>
-<h1>Hasil Perhitungan TSP</h1>
+
 <div id = "tab">
         <table id = "list" cellspacing = "1px" cellpadding = "8px" text-align = "center">
             <thead>
                 <tr>
                     <td>Algortima</td>
-                    <td>Partikel</td>
+                   
                     <td>MaxIterasi</td>
                     <td>Runtime</td>
                     <td>Jarak</td>

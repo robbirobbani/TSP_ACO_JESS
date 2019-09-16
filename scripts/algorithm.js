@@ -1,4 +1,6 @@
-function ACO(data) {
+function ACO(data,t1) {
+  var runningtime2 = new Array(100)
+  runningtime2[0] = 0
   var Rho = 0.5;
   var Thao = 0.2;
   var alpha = 1;
@@ -8,7 +10,7 @@ function ACO(data) {
   var lenD = data.length;
   var Iter = 0;
 
-  var maxIter = 1000;
+  var maxIter = 100;
 
   var temp = new Array(data.length + 1);
   var posisi = randPosisi(data, 1);
@@ -21,9 +23,8 @@ function ACO(data) {
   // console.log(urutandummy);
 
   var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
-  // console.log(penyebut);
-  var sortRS = sortPenyebut(randomSemut, penyebut);
-  // console.log(sortRS);
+   console.log(penyebut);
+ 
 
   var kelilingKota = urutanKota(
     Thao,
@@ -33,7 +34,7 @@ function ACO(data) {
     data,
     randomSemut
   );
-  // console.log(kelilingKota);
+   console.log(kelilingKota);
 
   var panjang = panjangPerjalanan(kelilingKota, data);
   // console.log(panjang);
@@ -49,12 +50,12 @@ function ACO(data) {
   // console.log(kelilingKota);
   var savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
   // console.log(savePanjang);
+  runningtime2[1] = performance.now()-t1
   Iter = 1;
 
   var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
   // console.log(penyebut);
-  var sortRS = sortPenyebut(randomSemut, penyebut);
-  // console.log(sortRS);
+  
 
   var kelilingKota = urutanKota(
     Thao,
@@ -83,7 +84,7 @@ function ACO(data) {
 
   savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
   // console.log(savePanjang);
-
+  runningtime2[2] = performance.now()-t1;
   for (var i = 2; i < maxIter; i++) {
     Iter = i;
     var posisi = randPosisi(data, 1);
@@ -95,8 +96,7 @@ function ACO(data) {
 
     var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
     // console.log(penyebut);
-    var sortRS = sortPenyebut(randomSemut, penyebut);
-    // console.log(sortRS);
+   
 
     var kelilingKota = urutanKota(
       Thao,
@@ -126,6 +126,7 @@ function ACO(data) {
     savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
     // console.log(savePanjang);
     console.log(Iter);
+    runningtime2[Iter+1]= performance.now()-t1
   }
 
   var hasil = hasilTSP(data, maxIter, savePanjang);
@@ -145,13 +146,16 @@ function ACO(data) {
   }
 
   console.log(hasil);
-
+  console.log(runningtime2)
   // var Random =
   // var fitness = hitungFitnessPopulasi(data,randomSemut);						//Fitness
   // console.log(fitness);
 }
 
-function MACO(data) {
+function MACO(data,t0) {
+  var runningtime =  new Array(100)
+  runningtime [0] =  0
+ 
   var Rho = 0.5;
   var Thao = 0.2;
   var alpha = 1;
@@ -161,7 +165,7 @@ function MACO(data) {
   var lenD = data.length;
   var Iter = 0;
 
-  var maxIter = 1000;
+  var maxIter = 100;
 
   var temp = new Array(data.length + 1);
   var posisi = randPosisi(data, 1);
@@ -170,8 +174,7 @@ function MACO(data) {
 
   var randomSemut = pengkodeanPopulasi(posisi);
 
-  var tes = thaoMACO(data, randomSemut);
-  console.log(tes);
+  var bestTemp = thaoMACO(data, randomSemut);
   // console.log(randomSemut);
   var urutandummy = [[1, 0, 3, 4, 2]];
   // console.log(urutandummy);
@@ -181,13 +184,14 @@ function MACO(data) {
   var sortRS = sortPenyebut(randomSemut, penyebut);
   // console.log(sortRS);
 
-  var kelilingKota = urutanKota(
+  var kelilingKota = urutanKotaMACO(
     Thao,
     alpha,
     betha,
     penyebut,
     data,
-    randomSemut
+    randomSemut,
+    bestTemp
   );
   // console.log(kelilingKota);
 
@@ -205,6 +209,7 @@ function MACO(data) {
   // console.log(kelilingKota);
   var savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
   // console.log(savePanjang);
+  runningtime[1]=performance.now()-t0
   Iter = 1;
 
   var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
@@ -212,13 +217,14 @@ function MACO(data) {
   var sortRS = sortPenyebut(randomSemut, penyebut);
   // console.log(sortRS);
 
-  var kelilingKota = urutanKota(
+  var kelilingKota = urutanKotaMACO(
     Thao,
     alpha,
     betha,
     penyebut,
     data,
-    randomSemut
+    randomSemut,
+    bestTemp
   );
   // console.log(kelilingKota);
 
@@ -239,6 +245,7 @@ function MACO(data) {
 
   savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
   // console.log(savePanjang);
+  runningtime[2]= performance.now()-t0
 
   for (var i = 2; i < maxIter; i++) {
     Iter = i;
@@ -255,13 +262,14 @@ function MACO(data) {
     var sortRS = sortPenyebut(randomSemut, penyebut);
     // console.log(sortRS);
 
-    var kelilingKota = urutanKota(
+    var kelilingKota = urutanKotaMACO(
       Thao,
       alpha,
       betha,
       penyebut,
       data,
-      randomSemut
+      randomSemut,
+      bestTemp
     );
     // console.log(kelilingKota);
 
@@ -282,6 +290,7 @@ function MACO(data) {
 
     savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
     // console.log(savePanjang);
+    runningtime[Iter+1]= performance.now()-t0
     console.log(Iter);
   }
 
@@ -293,8 +302,7 @@ function MACO(data) {
   var hasilIterasi = hasil[data.length + 1] + 1;
   console.log(hasilIterasi);
 
-  hasil.pop();
-  hasil.pop();
+  
   // console.log(hasil);
 
   for (var i = 0; i < data.length; i++) {
@@ -302,7 +310,8 @@ function MACO(data) {
   }
 
   console.log(hasil);
-
+  console.log(bestTemp);
+  console.log(runningtime)
   // var Random =
   // var fitness = hitungFitnessPopulasi(data,randomSemut);           //Fitness
   // console.log(fitness);
@@ -567,31 +576,24 @@ function newThao(rho, thao) {
 }
 
 function matrixNewT(jalurkota, panjang, NT) {
-  var newThao = new Array(jalurkota.length - 1);
+   var newThao = new Array(jalurkota.length - 1);
   var sum = 0;
-  for (var i = 0; i < jalurkota.length - 1; i++) {
-    newThao[i] = [];
+  
     for (var j = 0; j < jalurkota.length - 1; j++) {
-      newThao[i][j] = 0;
+      newThao[j]=[];
+      newThao[j][j] = 0;
     }
-  }
-  for (var i = 0; i < jalurkota.length - 1; i++) {
-    for (var j = 0; j < jalurkota.length - 1; j++) {
-      for (var l = 0; l < jalurkota.length - 1; l++) {
+ for (var l = 0; l < jalurkota.length - 1; l++) {
         for (var k = 0; k < jalurkota.length - 1; k++) {
-          if (i != j && jalurkota[k][l] == i && jalurkota[k + 1][l] == j) {
-            // console.log(
-            //   jalurkota[k][l] + " & " + jalurkota[k + 1][l] + " & " + i + j
-            // );
+          if (k != l && jalurkota[k][l] == k && jalurkota[k + 1][l] == l) {
+           
             sum += 1 / panjang[l];
-            // console.log(sum);
-            newThao[i][j] = sum;
+          
+            newThao[k][l] = sum;
           }
         }
+        sum = 0;
       }
-      sum = 0;
-    }
-  }
   for (var i = 0; i < jalurkota.length - 1; i++) {
     for (var j = 0; j < jalurkota.length - 1; j++) {
       if (i != j) {
@@ -640,29 +642,23 @@ function newThao2(simThao, Rho) {
 function matrixNewT2(jalurkota, panjang, NT) {
   var newThao = new Array(jalurkota.length - 1);
   var sum = 0;
-  for (var i = 0; i < jalurkota.length - 1; i++) {
-    newThao[i] = [];
+  
+    
     for (var j = 0; j < jalurkota.length - 1; j++) {
-      newThao[i][j] = 0;
+      newThao[j] = [];
+      newThao[j][j] = 0;
     }
-  }
-  for (var i = 0; i < jalurkota.length - 1; i++) {
-    for (var j = 0; j < jalurkota.length - 1; j++) {
-      for (var l = 0; l < jalurkota.length - 1; l++) {
+
+  for (var l = 0; l < jalurkota.length - 1; l++) {
         for (var k = 0; k < jalurkota.length - 1; k++) {
-          if (i != j && jalurkota[k][l] == i && jalurkota[k + 1][l] == j) {
-            // console.log(
-            //   jalurkota[k][l] + " & " + jalurkota[k + 1][l] + " & " + i + j
-            // );
+          if (k != l && jalurkota[k][l] == k && jalurkota[k + 1][l] == l) {
             sum += 1 / panjang[l];
-            // console.log(sum);
-            newThao[i][j] = sum;
+            newThao[k][l] = sum;
           }
         }
+        sum = 0;
       }
-      sum = 0;
-    }
-  }
+
   for (var i = 0; i < jalurkota.length - 1; i++) {
     for (var j = 0; j < jalurkota.length - 1; j++) {
       if (i != j) {
@@ -719,56 +715,193 @@ function hasilTSP(data, maxIter, savePanjang) {
   return hasil;
 }
 
-function thaoMACO(data, urutan) {
+
+  function thaoMACO(data, urutan){
   var dataThao = new Array();
   var dataX = new Array();
   var Thao = new Array();
-  dataX = copyD(data);
-  console.log(dataX);
+  dataX=copyD(data)
+  console.log(dataX)
   for (var i = 0; i < data.length; i++) {
+    
     dataX[i][i] = 9007199254740992;
-  }
+  } console.log(Thao)
   dataThao = copyD(dataX);
-  console.log(dataThao);
+  console.log(dataThao)
   for (var i = 0; i < data.length; i++) {
     Thao[i] = [];
     Thao[i][data.length] = [];
 
-    for (var j = 0; j < data.length; j++) {
-      if (j == 0) {
-        Thao[i][j] = urutan[0][i];
-        console.log(Thao[i][j]);
-        // Thao[i][data.length] = Math.min(dataThao[j][urutan[i]])
-        var values = dataThao.map(function(elt) {
-          return elt[urutan[0][i]];
-        });
-        console.log(values);
-        var min = Math.min.apply(Math, values);
-        console.log(min); // 1
-        Thao[i][j + 1] = dataThao[Thao[i][j]].indexOf(min);
-        Thao[i][data.length] = min;
+       for (var j = 0; j < data.length; j++) {
+      if(j==0){
+        
+        Thao[i][j] = urutan[0][i]
+        
+        var min = Math.min.apply(Math, dataThao[Thao[i][j]]);
+        
+        Thao[i][j+1] = dataThao[Thao[i][j]].indexOf(min)
+        
+        Thao[i][data.length] = min
         for (var k = 0; k < data.length; k++) {
           dataThao[k][urutan[0][i]] = 9007199254740992;
         }
-      } else if (j != data.length - 1) {
-        console.log(j);
-        var values = dataThao.map(function(elt) {
-          return elt[Thao[i][j]];
-        });
-        var min = Math.min.apply(Math, values);
-        console.log(min); // 1
-        Thao[i][j + 1] = dataThao[Thao[i][j - 1]].indexOf(min);
-        console.log(Thao[i][j + 1]);
-        // 1
-        Thao[i][data.length] += min;
+        for (var k = 0; k < data.length; k++) {
+          dataThao[k][Thao[i][j+1]] = 9007199254740992;
+        }
+      } else  if(j!=data.length-1){
+        
+        var min = Math.min.apply(Math, dataThao[Thao[i][j]]);
+       
+        Thao[i][j+1] = dataThao[Thao[i][j]].indexOf(min)
+        
+        Thao[i][data.length] += min
         for (var l = 0; l < data.length; l++) {
+
           dataThao[l][Thao[i][j]] = 9007199254740992;
+        }
+        
+      } else {
+        var min = dataX[Thao[i][j]][Thao[i][0]]
+        Thao[i][data.length] += min
+      }
+
+    }
+    dataThao= copyD(dataX);
+
+  }
+  
+  var jalurterkecil = new Array(data.length+3)
+  jalurterkecil[data.length+1]= Thao[0][data.length]
+  jalurterkecil[data.length+2]= 0
+  for (var i = 0; i < data.length; i++) {
+    if(jalurterkecil[data.length+1]>Thao[i][data.length]){
+      
+        jalurterkecil[data.length+1]= Thao[i][data.length]
+        jalurterkecil[data.length+2]= i
+    }
+  }
+  console.log(jalurterkecil)
+  for (var i = 0; i < data.length; i++) {
+    
+        jalurterkecil[i]= Thao[jalurterkecil[data.length+2]][i]
+  }
+  jalurterkecil[data.length]=jalurterkecil[0];
+  jalurterkecil[data.length+2]=1/(data.length*jalurterkecil[data.length+1]);
+  
+
+
+return jalurterkecil;
+}
+
+function urutanKotaMACO(th, a, b, copyRS, data, randurt,jalurterkecil) {
+  // console.log(copyRS);
+  var jalur = [];
+  var jalurKota = [];
+  var bilrandom = [];
+  var sum = 0;
+  var sum2 = 0;
+  var sum3 = 0;
+  var sum4 = 0;
+  var cek = 0;
+
+  for (var i = 0; i < data.length; i++) {
+    jalur[i] = [];
+
+    bilrandom[i] = [];
+    for (var j = 0; j < data.length; j++) {
+      if (j == randurt[0][i]) {
+        sum = 0;
+        jalur[i][j] = sum;
+      } else {
+        sum = Math.pow(1 / data[randurt[0][i]][j], b)
+        if(sum>jalurterkecil[data.length+2]){       
+          jalur[i][j] = sum; 
+        }
+        else  { jalurterkecil[i][j] = jalurterkecil[data.length+2]
         }
       }
     }
-    dataThao = copyD(dataX);
   }
-  return Thao;
-}
 
-// function acakSemut()
+  for (var i = 0; i < data.length; i++) {
+    jalurKota[i] = [];
+    jalurKota[data.length] = [];
+    jalurKota[0][i] = randurt[0][i];
+  }
+
+  for (var h = 1; h < data.length; h++) {
+   
+
+    for (var i = 0; i < data.length; i++) {
+      for (var m = 0; m < data.length; m++) {
+        if (jalur[i][m] != 0) {
+          var tmprandom = Math.random();
+          bilrandom[i] = tmprandom;
+          
+
+          if (jalur[i][m] > bilrandom[i]) {
+            bilrandom[i] = bilrandom[i] + jalur[i][m];
+            
+            m = m + data.length;
+          }
+          m = m + data.length;
+        }
+      }
+   
+
+      for (var j = 0; j < data.length; j++) {
+        
+        if (
+          jalur[i][j] != 0 &&
+          sum2 + jalur[i][j] < bilrandom[i] &&
+          j != data.length - 1
+        ) {
+          cek = j;
+          sum2 = sum2 + jalur[i][j];
+         
+        } else if (sum2 + jalur[i][j] > bilrandom[i] && j != data.length - 1) {
+         
+          jalurKota[h][i] = cek;
+          sum2 = 0;
+          jalur[i][cek] = sum2;
+         
+          j = j + data.length;
+        
+        } else if (j == data.length - 1 && jalur[i][j] != 0) {
+          cek = j;
+          jalur[i][j] = 0;
+          jalurKota[h][i] = cek;
+          sum2 = 0;
+          
+        } else if (j == data.length - 1 && jalur[i][j] == 0) {
+          jalur[i][cek] = 0;
+          jalurKota[h][i] = cek;
+          sum2 = 0;
+          
+        } else {
+
+        }
+       
+      }
+
+      for (var k = 0; k < data.length; k++) {
+        if (jalur[i][k] != 0) {
+          
+          sum = Math.pow(1 / data[randurt[0][i]][k], b)
+        if(sum>jalurterkecil[data.length+2]){       
+          jalur[i][k] = sum; 
+        }
+        else  { jalurterkecil[i][k] = jalurterkecil[data.length+2]
+        }
+         
+        }
+      }
+    }
+  }
+
+ 
+  for (var i = 0; i < data.length; i++) {
+    jalurKota[data.length][i] = jalurKota[0][i];
+  }
+  return jalurKota;
+}
