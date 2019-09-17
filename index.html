@@ -6,6 +6,7 @@
   <script src="scripts/xlsx.full.min.js"></script>
   <script src="scripts/jquery-3.3.1.min.js"></script>
   <script src="scripts/algorithm.js"></script>
+  <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 <body>
   <h1 align="center">P E R H I T U N G A N &nbsp;&nbsp; A C O</h1>
@@ -13,7 +14,7 @@
   <h3 align="center"> &nbsp;&nbsp; </h3>   
 <input type="file" id="myFile">
 
-MaxIter : <input type="number" id="n2">
+Max Iterasi : <input type="number" id="n2">
 <button onclick="run()">Run</button>
 <script>
 var dataA;
@@ -47,16 +48,65 @@ myFile.addEventListener('change', handleFile, false);
 
 function run(){
   var t0 = performance.now();
-  var t1 = performance.now();
+  
   //1 kali Perhitungan
   // var partikel = document.getElementById("n1").value;
-  // var maxIter = document.getElementById("n2").value;
+   var maxIter = document.getElementById("n2").value;
   if(dataA!=null){
     // PSO(dataA,partikel,maxIter);
     // MPSO(dataA,partikel,maxIter);
-    MACO(dataA,t0);
-  }
+   var runtime2 =  ACO(dataA,maxIter,t0);
+   var t1 = performance.now();
+   var runtime = MACO(dataA,maxIter,t1);
 
+  }
+var iterasi = []
+for (var i = 0; i <= maxIter; i++) {
+ iterasi[i]=i
+}
+var dataPoints = [];
+
+for (var i = 0; i <= maxIter; i++) {
+  dataPoints.push({
+    x: iterasi[i],
+    y: runtime2[i]
+  });
+}
+var chart = new CanvasJS.Chart("chartContainer", {
+  title: {
+    text: " Running Time Iterasi ACO "
+  },
+  data: [{
+    type: "line",
+    dataPoints: dataPoints
+  }]
+});
+
+chart.render();
+
+var iterasi = []
+for (var i = 0; i <= maxIter; i++) {
+ iterasi[i]=i
+}
+var dataPoints = [];
+
+for (var i = 0; i <= maxIter; i++) {
+  dataPoints.push({
+    x: iterasi[i],
+    y: runtime[i]
+  });
+}
+var chart = new CanvasJS.Chart("chartContainer2", {
+  title: {
+    text: " Running Time Iterasi MACO "
+  },
+  data: [{
+    type: "line",
+    dataPoints: dataPoints
+  }]
+});
+
+chart.render();
   //Pengulangan perhitungan
   /*var pengulangan = 5;
   var partikel = [10,20,30,40,50];
@@ -75,29 +125,39 @@ function run(){
     }
   }*/
   }
-  
+
+
   // var t1 = performance.now();
   // console.log(t1-t0);
 
 </script>
 
+
 <div id = "tab">
         <table id = "list" cellspacing = "1px" cellpadding = "8px" text-align = "center">
             <thead>
                 <tr>
+
                     <td>Algortima</td>
-                   
                     <td>MaxIterasi</td>
-                    <td>Runtime</td>
-                    <td>Jarak</td>
+                    <td>Jarak Terpendek</td>
+                    <td>Pada Iterasi</td>
                     <td>Urutan</td>
                 </tr>
+               
+                  
+               
             </thead>
 
             <tbody>
 
+
             </tbody>
         </table>
 </div>
+
+<div id="chartContainer" style="height: 300px; width: 100%;"></div>
+<div id="chartContainer2" style="height: 300px; width: 100%;"></div>
+
 </body>
 </html>

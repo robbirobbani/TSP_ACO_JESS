@@ -1,5 +1,5 @@
-function ACO(data,t1) {
-  var runningtime2 = new Array(100)
+function ACO(data,maxIter,t1) {
+  var runningtime2 = new Array(maxIter)
   runningtime2[0] = 0
   var Rho = 0.5;
   var Thao = 0.2;
@@ -10,7 +10,7 @@ function ACO(data,t1) {
   var lenD = data.length;
   var Iter = 0;
 
-  var maxIter = 100;
+ 
 
   var temp = new Array(data.length + 1);
   var posisi = randPosisi(data, 1);
@@ -23,7 +23,7 @@ function ACO(data,t1) {
   // console.log(urutandummy);
 
   var penyebut = nilaiPenyebut(Thao, alpha, betha, data);
-   console.log(penyebut);
+   // console.log(penyebut);
  
 
   var kelilingKota = urutanKota(
@@ -34,7 +34,7 @@ function ACO(data,t1) {
     data,
     randomSemut
   );
-   console.log(kelilingKota);
+   // console.log(kelilingKota);
 
   var panjang = panjangPerjalanan(kelilingKota, data);
   // console.log(panjang);
@@ -125,7 +125,7 @@ function ACO(data,t1) {
 
     savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
     // console.log(savePanjang);
-    console.log(Iter);
+    // console.log(Iter);
     runningtime2[Iter+1]= performance.now()-t1
   }
 
@@ -133,27 +133,44 @@ function ACO(data,t1) {
   // console.log(hasil);
 
   var hasilJarak = hasil[data.length];
-  console.log(hasilJarak);
+  // console.log(hasilJarak);
   var hasilIterasi = hasil[data.length + 1] + 1;
-  console.log(hasilIterasi);
+  // console.log(hasilIterasi);
 
   hasil.pop();
-  hasil.pop();
+  hasil[data.length] = hasil[0]
   // console.log(hasil);
 
-  for (var i = 0; i < data.length; i++) {
+  for (var i = 0; i <= data.length; i++) {
     hasil[i] += 1;
   }
 
-  console.log(hasil);
-  console.log(runningtime2)
+  // console.log(hasil);
+  // console.log(runningtime2)
+  var rows = "";
+  rows +=
+    "<tr><td>" +
+    "ACO" +
+    "</td><td>" +
+    maxIter +
+    "</td><td>" +
+    hasilJarak +
+    "</td><td>" +
+    hasilIterasi +
+    "</td><td>" +
+    hasil +
+    "</td></tr>";
+  $(rows).appendTo("#list tbody");
+  
+  return runningtime2
+
   // var Random =
   // var fitness = hitungFitnessPopulasi(data,randomSemut);						//Fitness
   // console.log(fitness);
 }
 
-function MACO(data,t0) {
-  var runningtime =  new Array(100)
+function MACO(data,maxIter,t0) {
+  var runningtime =  new Array(maxIter)
   runningtime [0] =  0
  
   var Rho = 0.5;
@@ -165,7 +182,7 @@ function MACO(data,t0) {
   var lenD = data.length;
   var Iter = 0;
 
-  var maxIter = 100;
+  
 
   var temp = new Array(data.length + 1);
   var posisi = randPosisi(data, 1);
@@ -291,27 +308,53 @@ function MACO(data,t0) {
     savePanjang = saveArray(kelilingKota, Iter, temp, panjang);
     // console.log(savePanjang);
     runningtime[Iter+1]= performance.now()-t0
-    console.log(Iter);
+    // console.log(Iter);
   }
 
   var hasil = hasilTSP(data, maxIter, savePanjang);
   // console.log(hasil);
-
+  if(bestTemp[data.length+1]>hasil[data.length]){
   var hasilJarak = hasil[data.length];
   console.log(hasilJarak);
   var hasilIterasi = hasil[data.length + 1] + 1;
-  console.log(hasilIterasi);
+  console.log(hasilIterasi);}
+
+  else{
+    var hasilJarak = bestTemp[data.length+1];
+    var hasilIterasi = "CNN"
+    hasil = bestTemp
+    hasil.pop()
+    hasil.pop()
+  }
 
   
   // console.log(hasil);
 
-  for (var i = 0; i < data.length; i++) {
+  for (var i = 0; i <= data.length; i++) {
     hasil[i] += 1;
   }
 
-  console.log(hasil);
-  console.log(bestTemp);
-  console.log(runningtime)
+  // console.log(hasil);
+  // console.log(bestTemp);
+  // console.log(runningtime)
+
+  var rows = "";
+  rows +=
+    "<tr><td>" +
+    "MACO" +
+    "</td><td>" +
+    maxIter +
+    "</td><td>" +
+    hasilJarak +
+    "</td><td>" +
+    hasilIterasi +
+    "</td><td>" +
+    hasil +
+    "</td></tr>";
+  $(rows).appendTo("#list tbody");
+
+  return runningtime
+
   // var Random =
   // var fitness = hitungFitnessPopulasi(data,randomSemut);           //Fitness
   // console.log(fitness);
@@ -721,13 +764,14 @@ function hasilTSP(data, maxIter, savePanjang) {
   var dataX = new Array();
   var Thao = new Array();
   dataX=copyD(data)
-  console.log(dataX)
+  // console.log(dataX)
   for (var i = 0; i < data.length; i++) {
     
     dataX[i][i] = 9007199254740992;
-  } console.log(Thao)
+  } 
+  //console.log(Thao)
   dataThao = copyD(dataX);
-  console.log(dataThao)
+  // console.log(dataThao)
   for (var i = 0; i < data.length; i++) {
     Thao[i] = [];
     Thao[i][data.length] = [];
@@ -780,7 +824,7 @@ function hasilTSP(data, maxIter, savePanjang) {
         jalurterkecil[data.length+2]= i
     }
   }
-  console.log(jalurterkecil)
+  // console.log(jalurterkecil)
   for (var i = 0; i < data.length; i++) {
     
         jalurterkecil[i]= Thao[jalurterkecil[data.length+2]][i]
